@@ -20,20 +20,21 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       : 'UTC';
 
   const defaultProfile: UserProfile = {
-    id: 'usr_current',
-    name: 'Jordan',
-    email: 'jordan@personal.homingo.ai',
-    title: 'Creative Architect & Resident',
-    company: 'Rivera Studio',
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    id: 'usr_shop_owner',
+    name: 'Shop Owner',
+    email: 'shop-owner@bhopal.local',
+    title: 'Small Shop Owner, Bhopal',
+    company: 'My Shop, Bhopal',
+    avatarUrl:
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%234f46e5'/%3E%3Ctext x='50' y='66' font-size='44' font-family='sans-serif' font-weight='700' fill='white' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E",
     timezone: detectedTimezone,
     executiveTone: 'concise',
-    vipContacts: ['clinic@metrohealth.org', 'landlord@skylineapts.com', 'family@rivera.net'],
+    vipContacts: ['Supplier', 'Accountant', 'Online store'],
   };
 
   const [profile, setProfile] = useState<UserProfile>(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('homingo_user_profile');
+      const saved = localStorage.getItem('homingo_user_profile_v2');
       if (saved) {
         try {
           return { ...defaultProfile, ...JSON.parse(saved) };
@@ -56,7 +57,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const updateProfile = (updated: Partial<UserProfile>) => {
     setProfile((prev) => {
       const next = { ...prev, ...updated };
-      localStorage.setItem('homingo_user_profile', JSON.stringify(next));
+      localStorage.setItem('homingo_user_profile_v2', JSON.stringify(next));
       return next;
     });
   };
@@ -66,13 +67,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const salutation =
     hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
 
-  const currentTimeFormatted = new Intl.DateTimeFormat('en-US', {
+  const currentTimeFormatted = new Intl.DateTimeFormat('en-IN', {
     hour: 'numeric',
     minute: '2-digit',
     hour12: true,
   }).format(currentDate);
 
-  const currentDateFormatted = new Intl.DateTimeFormat('en-US', {
+  const currentDateFormatted = new Intl.DateTimeFormat('en-IN', {
     weekday: 'long',
     month: 'short',
     day: 'numeric',

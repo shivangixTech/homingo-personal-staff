@@ -75,7 +75,7 @@ export const EmailPage: React.FC = () => {
 
   const tabs = [
     { id: 'all' as EmailCategory, label: 'All Personal Inbox', count: emails.length },
-    { id: 'urgent' as EmailCategory, label: 'Doctor & Urgent Action' },
+    { id: 'urgent' as EmailCategory, label: 'Urgent Action' },
     { id: 'financial' as EmailCategory, label: 'Bills & Utilities' },
     { id: 'team' as EmailCategory, label: 'Apartment & Living' },
     { id: 'newsletter' as EmailCategory, label: 'Subscriptions' },

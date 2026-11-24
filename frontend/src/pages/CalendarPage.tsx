@@ -117,10 +117,10 @@ export const CalendarPage: React.FC = () => {
             </div>
             <div>
               <h4 className="text-xs font-bold text-slate-900 dark:text-white">
-                Transit Buffer Guard: Metro Dental Cleaning at 4:00 PM
+                Transit Buffer Guard: Meeting with Supplier, 25 Nov at 11:00 AM
               </h4>
               <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-0.5">
-                Homingo calculated a 25-minute travel window starting at 3:35 PM. Zero conflicts or overlapping invitations will be accepted during this buffer.
+                Homingo checked the shop day: delivery at the shop follows the same day at 4:00 PM, and the call with the accountant is on 26 Nov at 10:00 AM. No clashes.
               </p>
             </div>
           </div>
@@ -264,7 +264,7 @@ export const CalendarPage: React.FC = () => {
               required
               value={newEventTitle}
               onChange={(e) => setNewEventTitle(e.target.value)}
-              placeholder="e.g. Annual Dental Exam, Plumber Visit, Dinner"
+              placeholder="e.g. Meeting with supplier, Delivery at the shop, Call with accountant"
               className="w-full rounded-xl border px-3 py-2 text-xs text-slate-900 dark:text-white bg-slate-50 border-slate-300 dark:bg-slate-950 dark:border-slate-800 focus:outline-none focus:ring-1 focus:ring-indigo-500"
             />
           </div>

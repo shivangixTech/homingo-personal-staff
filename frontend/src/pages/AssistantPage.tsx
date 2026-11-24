@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useEffectEvent, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
   Sparkles,
@@ -11,7 +11,6 @@ import {
   ChevronRight,
   PlusCircle,
   MessageSquare,
-  Cpu,
   Mic,
   MicOff,
   CheckCircle2,
@@ -35,6 +34,8 @@ export const AssistantPage: React.FC = () => {
   const { profile } = useUser();
   const { toast } = useToast();
   const location = useLocation();
+  const queuedPrompt = (location.state as { initialPrompt?: string } | null)?.initialPrompt;
+  const lastHandledPrompt = useRef<string | null>(null);
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [threads, setThreads] = useState<ChatThread[]>([]);
@@ -47,27 +48,21 @@ export const AssistantPage: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    async function loadChatData() {
-      try {
-        const [threadsData, msgsData, promptsData] = await Promise.all([
-          apiService.getChatThreads(),
-          apiService.getChatMessages(activeThreadId),
-          apiService.getSuggestedPrompts(),
-        ]);
+    let active = true;
+    Promise.all([
+      apiService.getChatThreads(),
+      apiService.getChatMessages(activeThreadId),
+      apiService.getSuggestedPrompts(),
+    ]).then(
+      ([threadsData, messagesData, promptsData]) => {
+        if (!active) return;
         setThreads(threadsData);
-        setMessages(msgsData);
+        setMessages(messagesData);
         setSuggestedPrompts(promptsData);
-
-        // Check if navigated with initial prompt from Command Palette
-        const initialPrompt = (location.state as any)?.initialPrompt;
-        if (initialPrompt) {
-          handleSend(initialPrompt);
-        }
-      } catch (err) {
-        console.error('Failed to load chat data', err);
-      }
-    }
-    loadChatData();
+      },
+      (error) => { if (active) console.error('Failed to load chat data', error); },
+    );
+    return () => { active = false; };
   }, [activeThreadId]);
 
   useEffect(() => {
@@ -98,6 +93,17 @@ export const AssistantPage: React.FC = () => {
     }
   };
 
+  const sendQueuedPrompt = useEffectEvent((prompt: string) => {
+    if (isThinking) setInputMessage(prompt);
+    else void handleSend(prompt);
+  });
+
+  useEffect(() => {
+    if (!queuedPrompt || lastHandledPrompt.current === location.key) return;
+    lastHandledPrompt.current = location.key;
+    sendQueuedPrompt(queuedPrompt);
+  }, [location.key, queuedPrompt]);
+
   const toggleToolExpand = (id: string) => {
     setExpandedTools((prev) => ({ ...prev, [id]: !prev[id] }));
   };
@@ -116,7 +122,21 @@ export const AssistantPage: React.FC = () => {
   };
 
   return (
-    <div className="flex h-[calc(100vh-8.5rem)] flex-col lg:flex-row gap-4 overflow-hidden">
+    <div className="flex min-h-[480px] h-[calc(100dvh-7.25rem)] flex-col lg:flex-row gap-3 overflow-hidden">
+      {threads.length > 0 && (
+        <div className="flex items-center gap-2 lg:hidden">
+          <label htmlFor="chat-conversation" className="shrink-0 text-xs font-semibold">Conversation</label>
+          <select
+            id="chat-conversation"
+            className="min-w-0 flex-1 rounded-lg border border-slate-200 bg-white px-2 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+            value={activeThreadId}
+            onChange={(event) => setActiveThreadId(event.target.value)}
+          >
+            {threads.map((thread) => <option key={thread.id} value={thread.id}>{thread.title}</option>)}
+          </select>
+        </div>
+      )}
+
       {/* 1. Left Sidebar: Conversation Threads */}
       <div className="hidden lg:flex w-72 flex-col rounded-2xl border transition-all p-3.5 bg-white border-slate-200/90 shadow-sm dark:bg-slate-900/60 dark:border-slate-800/80 dark:backdrop-blur-md">
         <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800 px-2">
@@ -166,39 +186,24 @@ export const AssistantPage: React.FC = () => {
           })}
         </div>
 
-        {/* Model Spec Badge */}
-        <div className="pt-3 border-t border-slate-200 dark:border-slate-800/80 px-2">
-          <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400">
-            <span className="flex items-center gap-1.5">
-              <Cpu className="w-3 h-3 text-indigo-500" /> Personal Assistant Core
-            </span>
-            <Badge variant="indigo" size="sm">
-              Online
-            </Badge>
-          </div>
-        </div>
       </div>
 
       {/* 2. Main Chat Workspace */}
-      <div className="flex flex-1 flex-col rounded-3xl border transition-all overflow-hidden bg-white border-slate-200/90 shadow-sm dark:bg-slate-900/60 dark:border-slate-800/80 dark:backdrop-blur-md">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col rounded-2xl border transition-all overflow-hidden bg-white border-slate-200/90 shadow-sm dark:bg-slate-900/60 dark:border-slate-800/80 dark:backdrop-blur-md">
         {/* Chat Header */}
-        <div className="flex items-center justify-between px-6 py-3.5 border-b border-slate-200 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/40">
+        <div className="flex items-center justify-between gap-2 px-3 sm:px-6 py-3.5 border-b border-slate-200 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/40">
           <div className="flex items-center gap-3">
             <div className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-200 dark:bg-indigo-600/20 dark:text-indigo-400 dark:border-indigo-500/30">
               <Sparkles className="w-4 h-4" />
-              <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white tracking-tight">
-                  Personal AI Chief of Staff
+                  Homingo Assistant
                 </h3>
-                <Badge variant="neutral" size="sm" className="hidden sm:inline-flex">
-                  Active Assistant
-                </Badge>
               </div>
               <p className="text-[10px] text-slate-500 dark:text-slate-400">
-                Connected to Personal Gmail, Calendar, ConEdison & Chase Bank Feed
+Ask about your shop’s mail, bills and calendar.
               </p>
             </div>
           </div>
@@ -379,6 +384,7 @@ export const AssistantPage: React.FC = () => {
             <div className="relative flex-1">
               <input
                 type="text"
+                aria-label="Message Homingo"
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 placeholder="Ask Homingo (e.g., 'Check my important emails', 'Find my pending refunds')..."

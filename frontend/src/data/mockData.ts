@@ -1,5 +1,8 @@
-// HOMINGO AI — Central Mock Data Store
-// Realistic everyday Personal Chief of Staff data (non-generic, personal responsibilities)
+// HOMINGO AI - Central Data Store
+// Personal Chief of Staff data for one small shop owner in Bhopal.
+// This data matches the backend sample data exactly: same bills, same
+// amounts, same dates, same refund and same licence renewal details.
+// No personal name is used anywhere in this file.
 
 import type {
   UserProfile,
@@ -18,109 +21,123 @@ import type {
 } from '../types';
 
 export const MOCK_USER: UserProfile = {
-  id: 'usr_jordan',
-  name: 'Jordan Rivera',
-  email: 'jordan@personal.homingo.ai',
-  title: 'Principal Designer & Homeowner',
-  company: 'Rivera Studio',
-  avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-  timezone: 'America/New_York (EST)',
+  id: 'usr_shop_owner',
+  name: 'Shop Owner',
+  email: 'shop-owner@bhopal.local',
+  title: 'Small Shop Owner, Bhopal',
+  company: 'My Shop, Bhopal',
+  avatarUrl:
+    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%234f46e5'/%3E%3Ctext x='50' y='66' font-size='44' font-family='sans-serif' font-weight='700' fill='white' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E",
+  timezone: 'Asia/Kolkata',
   executiveTone: 'concise',
-  vipContacts: ['dr.aris@metrohealth.org', 'support@delta.com', 'building.mgmt@skyline.com'],
+  vipContacts: ['Supplier', 'Accountant', 'Online store'],
+};
+
+// Shop licence renewal (the one government service in scope).
+// Documents present: Aadhaar. Documents missing: address proof.
+export const GOVERNMENT_FORM = {
+  service: 'Shop licence renewal',
+  documentsPresent: ['Aadhaar'],
+  documentsMissing: ['Address proof'],
+  status: 'waiting for documents',
+  nextStep: 'Submit address proof, then the renewal form can be filed.',
 };
 
 export const MOCK_DASHBOARD: DashboardSummary = {
   greeting: {
-    salutation: 'Good afternoon',
-    name: 'Jordan',
+    salutation: 'Good evening',
+    name: 'Shop Owner',
     title: 'Personal Chief of Staff',
     dateFormatted: 'Tuesday, Nov 24',
     briefSummary:
-      'Homingo is monitoring 4 everyday priorities: your ConEdison power bill due tomorrow ($135.20), an airline refund pending for 7 days ($240.00), Dr. Aris clinic email awaiting reply, and your dental appointment at 4:00 PM.',
+      'Homingo is watching 3 shop bills, 1 refund pending for 7 days (Rs 1,999, order 8891), 4 important mails, and 3 shop events. The shop licence renewal is waiting for address proof.',
   },
   metrics: {
-    emailsTriaged: 18,
+    emailsTriaged: 5,
     meetingsOptimized: 3,
-    refundsClaimed: 240.00,
-    pendingApprovalsCount: 2,
-    aiTimeSavedHours: 3.8,
+    refundsClaimed: 1999,
+    pendingApprovalsCount: 0,
+    aiTimeSavedHours: 2.5,
   },
   urgentAlerts: [
     {
-      id: 'alert_power_due',
+      id: 'alert_bill_due',
       level: 'warning',
-      title: 'Electricity Bill Due Tomorrow ($135.20)',
-      description: 'ConEdison billing cycle closes Nov 25. Auto-pay is disabled on this utility account. 1-click authorization ready.',
-      actionLabel: 'Authorize Payment',
-      actionUrl: '/approvals',
-      timestamp: '2026-11-24T14:30:00Z',
+      title: 'Electricity Bill Due Soon (Rs 1,240)',
+      description:
+        'Electricity bill of Rs 1,240 is due on 28 Nov. Payment needs your approval first. Nothing is paid without it.',
+      actionLabel: 'Review Bills',
+      actionUrl: '/bills',
+      timestamp: '2026-11-24T14:30:00+05:30',
     },
     {
       id: 'alert_refund_stalled',
       level: 'info',
-      title: 'Delta Refund Pending for 7 Days ($240.00)',
-      description: 'EU261 claim for flight DL 189 delay has had no merchant reply for 7 days. Homingo prepared an automated escalation follow-up.',
-      actionLabel: 'Track Dispute',
+      title: 'Refund Pending for 7 Days (Rs 1,999)',
+      description:
+        'Refund of Rs 1,999 for order 8891 has been pending for 7 days. Homingo has a follow-up message ready for the online store.',
+      actionLabel: 'Track Refund',
       actionUrl: '/bills',
-      timestamp: '2026-11-24T11:00:00Z',
+      timestamp: '2026-11-24T11:00:00+05:30',
     },
     {
-      id: 'alert_doctor_buffer',
+      id: 'alert_supplier_meeting',
       level: 'info',
-      title: 'Dental Appointment Today at 4:00 PM',
-      description: 'Annual check-up at Metro Dental Clinic. Homingo protected a 20-minute travel buffer starting at 3:35 PM to avoid transit delay.',
+      title: 'Meeting with Supplier, 25 Nov at 11:00 AM',
+      description:
+        'Discuss the monthly stock order. Delivery at the shop follows the same day at 4:00 PM.',
       actionLabel: 'View Schedule',
       actionUrl: '/calendar',
-      timestamp: '2026-11-24T09:00:00Z',
+      timestamp: '2026-11-24T09:00:00+05:30',
     },
   ],
 };
 
 export const MOCK_SUGGESTED_PROMPTS: SuggestedPrompt[] = [
   {
-    id: 'sug_emails',
-    title: 'Check my important emails',
-    prompt: 'Check my important emails and tell me what requires my personal attention today.',
-    category: 'email',
-  },
-  {
-    id: 'sug_refunds',
-    title: 'Find my pending refunds',
-    prompt: 'Find my pending refunds and check if any merchant disputes are stalled.',
-    category: 'finance',
-  },
-  {
-    id: 'sug_schedule',
-    title: 'Organise my schedule for tomorrow',
-    prompt: 'Organise my schedule for tomorrow with realistic buffers between commitments.',
+    id: 'sug_meetings',
+    title: 'What are my meetings today',
+    prompt: 'aaj ki meeting batao',
     category: 'calendar',
   },
   {
-    id: 'sug_bills',
-    title: 'Remind me about upcoming bills',
-    prompt: 'Remind me about upcoming bills due this week and flag any unusual price spikes.',
+    id: 'sug_bill',
+    title: 'How much is the electricity bill',
+    prompt: 'bijli ka bill kitna hai',
     category: 'finance',
+  },
+  {
+    id: 'sug_emails',
+    title: 'Show my important mails',
+    prompt: 'mail batao',
+    category: 'email',
+  },
+  {
+    id: 'sug_licence',
+    title: 'What do I need for licence renewal',
+    prompt: 'licence renewal ke liye kya chahiye',
+    category: 'briefing',
   },
 ];
 
 export const MOCK_CHAT_THREADS: ChatThread[] = [
   {
     id: 'th_daily_brief',
-    title: 'Today’s Responsibilities & Doctor Sync',
-    lastMessageSnippet: 'Reserved 20-min travel buffer before your 4:00 PM dental appointment.',
-    updatedAt: '2026-11-24T14:15:00Z',
+    title: 'Today at the Shop',
+    lastMessageSnippet: '3 shop events, 3 bills due, 1 refund pending for 7 days.',
+    updatedAt: '2026-11-24T14:15:00+05:30',
   },
   {
-    id: 'th_delta_dispute',
-    title: 'Delta Airlines Flight Refund ($240.00)',
-    lastMessageSnippet: 'Follow-up inquiry drafted under DOT consumer flight delay guidelines.',
-    updatedAt: '2026-11-23T16:30:00Z',
+    id: 'th_refund_8891',
+    title: 'Refund for Order 8891 (Rs 1,999)',
+    lastMessageSnippet: 'Refund pending for 7 days. Follow-up message drafted.',
+    updatedAt: '2026-11-23T16:30:00+05:30',
   },
   {
-    id: 'th_home_utility',
-    title: 'ConEdison & Home Utilities Review',
-    lastMessageSnippet: 'ConEdison bill $135.20 analyzed. Consistent with seasonal heating.',
-    updatedAt: '2026-11-22T10:00:00Z',
+    id: 'th_licence',
+    title: 'Shop Licence Renewal',
+    lastMessageSnippet: 'Aadhaar is on file. Address proof is still missing.',
+    updatedAt: '2026-11-22T10:00:00+05:30',
   },
 ];
 
@@ -128,88 +145,58 @@ export const MOCK_CHAT_MESSAGES: ChatMessage[] = [
   {
     id: 'msg_01',
     role: 'system',
-    content: 'Homingo Personal Chief of Staff initialized. Connected to Personal Gmail, Apple Calendar, Chase Banking & Utility Accounts.',
-    createdAt: '2026-11-24T08:00:00Z',
+    content:
+      'Homingo Personal Chief of Staff is ready. It reads shop mail, manages the calendar, tracks bills and refunds, and helps with the shop licence renewal. It never pays a bill or sends a mail without your approval.',
+    createdAt: '2026-11-24T08:00:00+05:30',
   },
   {
     id: 'msg_02',
     role: 'user',
-    content: 'Good morning Homingo. What are the key personal things I need to take care of today?',
-    createdAt: '2026-11-24T08:15:00Z',
+    content: 'What do I need to take care of today at the shop?',
+    createdAt: '2026-11-24T08:15:00+05:30',
   },
   {
     id: 'msg_03',
     role: 'assistant',
-    content: `Good morning Jordan! Here is your personal briefing for today:
+    content: `Here is your shop briefing for today:
 
-1. **Electricity Bill Due Tomorrow ($135.20)**
-   - Provider: ConEdison (Account #9910-21)
-   - Status: Needs your 1-click authorization to schedule debit before tomorrow's 5 PM cutoff.
+1. **Electricity Bill Due 28 Nov (Rs 1,240)**
+   - Supplier bill of Rs 8,500 is due 30 Nov and internet bill of Rs 799 is due 5 Dec.
+   - I will not pay anything until you approve it.
 
-2. **Pending Refund Alert ($240.00)**
-   - Your Delta flight delay claim has been pending 7 days with no carrier reply. I have drafted an automated escalation inquiry.
+2. **Refund Pending for 7 Days (Rs 1,999)**
+   - Refund for order 8891 is still pending. I have drafted a follow-up message for the online store.
 
-3. **Important Email Awaiting Reply**
-   - Dr. Aris Clinic sent your routine bloodwork summary. The doctor asks to confirm your choice between a quick telemedicine follow-up or in-person review.
+3. **Important Mails (4)**
+   - Supplier invoice, refund update for order 8891, electricity bill reminder, and shop licence renewal reminder.
 
-4. **Today's Schedule**
-   - Metro Dental cleaning at 4:00 PM. I added a 20-minute travel window starting at 3:35 PM so you won't feel rushed.`,
-    createdAt: '2026-11-24T08:16:30Z',
+4. **Today at the Shop**
+   - Meeting with supplier on 25 Nov at 11:00 AM, delivery at the shop at 4:00 PM, and a call with the accountant on 26 Nov at 10:00 AM.
+
+5. **Shop Licence Renewal**
+   - Aadhaar is already on file. Address proof is still missing.`,
+    createdAt: '2026-11-24T08:16:30+05:30',
     toolsExecuted: [
       {
-        toolName: 'inbox_guardian.triage_personal',
+        toolName: 'email_agent.read_mail',
         status: 'completed',
-        input: { unreadCount: 18, senderWhitelist: ['metrohealth.org', 'coned.com'] },
-        output: { importantFound: 2, spamFiltered: 16 },
+        input: { importantOnly: true },
+        output: { importantFound: 4, total: 5 },
         durationMs: 145,
       },
       {
-        toolName: 'financial_radar.audit_upcoming_bills',
+        toolName: 'finance_agent.check_bills',
         status: 'completed',
-        input: { dueWithinDays: 3 },
-        output: { count: 1, merchant: 'ConEdison', amount: 135.20 },
+        input: { dueWithinDays: 10 },
+        output: { count: 3, totalDue: 10539 },
         durationMs: 190,
       },
       {
-        toolName: 'calendar_optimizer.protect_travel_buffer',
+        toolName: 'finance_agent.track_refund',
         status: 'completed',
-        input: { event: 'Metro Dental', bufferMinutes: 20 },
-        output: { bufferApplied: true, noConflicts: true },
+        input: { orderId: '8891' },
+        output: { amount: 1999, daysPending: 7 },
         durationMs: 110,
-      },
-    ],
-  },
-  {
-    id: 'msg_04',
-    role: 'user',
-    content: 'Check my important emails and show me the draft for Dr. Aris.',
-    createdAt: '2026-11-24T12:30:00Z',
-  },
-  {
-    id: 'msg_05',
-    role: 'assistant',
-    content: `I have reviewed the email from Dr. Aris. All routine lab metrics are normal. Here is the response drafted in your natural, friendly tone:
-
-> **To:** Dr. Julian Aris <dr.aris@metrohealth.org>  
-> **Subject:** Re: Annual Wellness Lab Results — Follow-up  
->
-> Hi Dr. Aris,  
->
-> Thank you for sharing the lab results and glad to hear the panels look great.  
-> A quick 15-minute telemedicine call works best for my schedule. I'm available Thursday afternoon between 2:00 PM and 4:00 PM if any slot is open.  
->
-> Best,  
-> Jordan Rivera
-
-You can send this with 1 click in your **Email Management** or **Approvals** tab.`,
-    createdAt: '2026-11-24T12:31:10Z',
-    toolsExecuted: [
-      {
-        toolName: 'email_agent.draft_personal_response',
-        status: 'completed',
-        input: { threadId: 'em_clinic_01', tone: 'warm_concise' },
-        output: { status: 'draft_ready', confidence: 0.98 },
-        durationMs: 230,
       },
     ],
   },
@@ -217,377 +204,249 @@ You can send this with 1 click in your **Email Management** or **Approvals** tab
 
 export const MOCK_EMAILS: EmailItem[] = [
   {
-    id: 'em_clinic_01',
-    senderName: 'Dr. Julian Aris',
-    senderEmail: 'dr.aris@metrohealth.org',
-    avatar: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=100&auto=format&fit=crop&q=80',
-    subject: 'Annual Wellness Lab Results & Next Steps',
-    snippet: 'Hi Jordan, good news: all panels from your bloodwork came back within healthy reference ranges. Would you like a quick 15-min call to review...',
-    receivedAt: '2026-11-24T10:15:00Z',
+    id: 'mail-1',
+    senderName: 'Supplier',
+    senderEmail: 'supplier@shop.local',
+    subject: 'Supplier invoice for this month',
+    snippet: 'The supplier sent the monthly invoice. Amount Rs 8,500, due 30 Nov.',
+    receivedAt: '2026-11-24T10:15:00+05:30',
+    category: 'financial',
+    priority: 'high',
+    aiSummary: 'Monthly supplier invoice of Rs 8,500, due 30 Nov.',
+    suggestedReply:
+      'Thank you for the invoice. I have noted Rs 8,500 due on 30 Nov and will confirm the payment after checking the stock.',
+    replyStatus: 'drafted',
+    isRead: false,
+  },
+  {
+    id: 'mail-2',
+    senderName: 'Online store',
+    senderEmail: 'support@store.local',
+    subject: 'Refund update for order 8891',
+    snippet: 'The refund of Rs 1,999 is still being processed. It has been pending for 7 days.',
+    receivedAt: '2026-11-23T14:10:00+05:30',
+    category: 'financial',
+    priority: 'medium',
+    aiSummary: 'Refund of Rs 1,999 for order 8891 is still pending after 7 days.',
+    suggestedReply:
+      'Hello, I am following up on the refund of Rs 1,999 for order 8891. It has been 7 days. Please confirm when it will be credited.',
+    replyStatus: 'drafted',
+    isRead: false,
+  },
+  {
+    id: 'mail-3',
+    senderName: 'Bank',
+    senderEmail: 'alerts@bank.local',
+    subject: 'Electricity bill reminder',
+    snippet: 'The electricity bill of Rs 1,240 is due on 28 Nov.',
+    receivedAt: '2026-11-23T09:30:00+05:30',
+    category: 'financial',
+    priority: 'high',
+    aiSummary: 'Electricity bill of Rs 1,240 is due on 28 Nov.',
+    replyStatus: 'none',
+    isRead: true,
+  },
+  {
+    id: 'mail-4',
+    senderName: 'Customer',
+    senderEmail: 'customer@shop.local',
+    subject: 'Question about shop timings',
+    snippet: 'A customer asked about the shop opening time.',
+    receivedAt: '2026-11-24T06:00:00+05:30',
+    category: 'team',
+    priority: 'low',
+    aiSummary: 'A customer asked about the shop opening time.',
+    suggestedReply:
+      'Hello, thank you for asking. The shop opens at 10:00 AM every day. Please visit us anytime after that.',
+    replyStatus: 'drafted',
+    isRead: true,
+  },
+  {
+    id: 'mail-5',
+    senderName: 'Local office',
+    senderEmail: 'office@bhopal.local',
+    subject: 'Shop licence renewal reminder',
+    snippet: 'The shop licence renewal needs address proof. Aadhaar is already on file.',
+    receivedAt: '2026-11-24T08:30:00+05:30',
     category: 'urgent',
     priority: 'high',
-    aiSummary: 'Dr. Aris confirmed your routine bloodwork is normal and asks whether you prefer a quick telemedicine or in-person review this week.',
-    suggestedReply: 'Hi Dr. Aris, glad to hear the labs look good. A 15-min telemedicine call works great for me—Thursday between 2:00 and 4:00 PM is ideal if that fits your clinic schedule.',
-    replyStatus: 'drafted',
-    isRead: false,
-  },
-  {
-    id: 'em_landlord_02',
-    senderName: 'Skyline Residences (Building Mgmt)',
-    senderEmail: 'management@skylineapts.com',
-    avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&auto=format&fit=crop&q=80',
-    subject: 'Annual Lease Renewal Option & HVAC Maintenance Notice',
-    snippet: 'Dear Resident, your lease renewal window for Unit 4B opens next month with identical rate terms. Also, routine HVAC filter changes occur this Friday...',
-    receivedAt: '2026-11-24T08:30:00Z',
-    category: 'team',
-    priority: 'medium',
-    aiSummary: 'Building management confirmed 0% rent increase option for lease renewal. Filter change scheduled for Friday 10 AM.',
-    suggestedReply: 'Thank you for the update. We plan to renew under the same terms. Please proceed with the Friday filter change as scheduled.',
-    replyStatus: 'drafted',
-    isRead: true,
-  },
-  {
-    id: 'em_coned_03',
-    senderName: 'ConEdison Utilities',
-    senderEmail: 'ebill@coned.com',
-    subject: 'Your November Electric & Gas Statement is Ready ($135.20)',
-    snippet: 'Your monthly bill for service through Nov 21 is $135.20. Payment is due by Nov 25, 2026...',
-    receivedAt: '2026-11-23T14:10:00Z',
-    category: 'financial',
-    priority: 'high',
-    aiSummary: 'Monthly electricity bill of $135.20 due tomorrow. Normal consumption levels; no unexpected price spikes.',
+    aiSummary: 'Shop licence renewal is waiting for address proof. Aadhaar is already on file.',
     replyStatus: 'none',
-    isRead: true,
-  },
-  {
-    id: 'em_delta_04',
-    senderName: 'Delta Customer Care',
-    senderEmail: 'customercare@delta.com',
-    subject: 'Update on Claim #DL-88291 (Flight Delay Compensation)',
-    snippet: 'We have received your claim documentation and are reviewing ticket details under European travel regulations...',
-    receivedAt: '2026-11-17T11:20:00Z',
-    category: 'financial',
-    priority: 'medium',
-    aiSummary: 'Dispute has had no status progression for 7 days. Homingo is holding an escalation follow-up ready to ping the carrier.',
-    suggestedReply: 'Checking in regarding claim #DL-88291. It has been 7 days since receipt confirmation. Please confirm disbursement timeline.',
-    replyStatus: 'drafted',
     isRead: false,
-  },
-  {
-    id: 'em_substack_05',
-    senderName: 'The Curious Architect',
-    senderEmail: 'digest@curiousarchitect.substack.com',
-    subject: 'Passive House Principles & Smart Living in 2027',
-    snippet: 'Deep dive into bioclimatic architecture, natural lighting, and energy-neutral residences...',
-    receivedAt: '2026-11-24T06:00:00Z',
-    category: 'newsletter',
-    priority: 'low',
-    aiSummary: 'Weekly design digest exploring sustainable residential architecture and natural ventilation.',
-    replyStatus: 'none',
-    isRead: true,
   },
 ];
 
 export const MOCK_CALENDAR_EVENTS: CalendarEvent[] = [
   {
-    id: 'cal_morning_routine',
-    title: 'Morning Flow & AI Daily Plan',
-    startTime: '2026-11-24T13:30:00Z',
-    endTime: '2026-11-24T14:00:00Z',
-    timeFormatted: '8:30 AM – 9:00 AM',
-    location: 'Home Study',
-    attendees: [{ name: 'Jordan Rivera', email: 'jordan@personal.homingo.ai' }],
-    category: 'personal',
-    conflict: false,
-    prepNotes: 'Homingo reviewed overnight notifications and flagged electricity bill due tomorrow.',
-  },
-  {
-    id: 'cal_studio_design',
-    title: 'Focus: Eco-Pavilion Design Drafts',
-    startTime: '2026-11-24T15:00:00Z',
-    endTime: '2026-11-24T17:00:00Z',
-    timeFormatted: '10:00 AM – 12:00 PM',
-    location: 'Studio Desk (Deep Work)',
-    attendees: [{ name: 'Jordan Rivera', email: 'jordan@personal.homingo.ai' }],
-    category: 'focus',
-    conflict: false,
-    prepNotes: 'Protected focus window; notifications automatically silenced.',
-  },
-  {
-    id: 'cal_contractor_call',
-    title: 'Contractor Sync on Kitchen Remodel',
-    startTime: '2026-11-24T19:00:00Z',
-    endTime: '2026-11-24T19:30:00Z',
-    timeFormatted: '2:00 PM – 2:30 PM',
-    location: 'Phone Call',
-    attendees: [
-      { name: 'Jordan Rivera', email: 'jordan@personal.homingo.ai' },
-      { name: 'Sam Miller', email: 'sam@millerbuilders.com' },
-    ],
+    id: 'event-1',
+    title: 'Meeting with supplier',
+    startTime: '2026-11-25T11:00:00+05:30',
+    endTime: '2026-11-25T11:30:00+05:30',
+    timeFormatted: '11:00 AM - 11:30 AM',
+    location: 'At the shop',
+    attendees: [{ name: 'Supplier', email: 'supplier@shop.local' }],
     category: 'meeting',
     conflict: false,
-    prepNotes: 'Confirm cabinet delivery date and tile shipment receipt.',
+    prepNotes: 'Discuss the monthly stock order.',
   },
   {
-    id: 'cal_travel_buffer',
-    title: 'Transit Buffer to Metro Dental',
-    startTime: '2026-11-24T20:35:00Z',
-    endTime: '2026-11-24T21:00:00Z',
-    timeFormatted: '3:35 PM – 4:00 PM',
-    location: 'Downtown Transit',
-    attendees: [{ name: 'Jordan Rivera', email: 'jordan@personal.homingo.ai' }],
-    category: 'travel',
-    conflict: false,
-    prepNotes: 'Automated 25-min buffer protected by Homingo to guarantee on-time clinic arrival.',
-  },
-  {
-    id: 'cal_dental_appt',
-    title: 'Annual Dental Cleaning & Exam',
-    startTime: '2026-11-24T21:00:00Z',
-    endTime: '2026-11-24T21:45:00Z',
-    timeFormatted: '4:00 PM – 4:45 PM',
-    location: 'Metro Dental Clinic (Suite 300)',
-    attendees: [
-      { name: 'Jordan Rivera', email: 'jordan@personal.homingo.ai' },
-      { name: 'Dr. Chloe Vance', email: 'reception@metrodental.com' },
-    ],
+    id: 'event-2',
+    title: 'Delivery at the shop',
+    startTime: '2026-11-25T16:00:00+05:30',
+    endTime: '2026-11-25T16:30:00+05:30',
+    timeFormatted: '4:00 PM - 4:30 PM',
+    location: 'At the shop',
+    attendees: [{ name: 'Shop Owner', email: 'shop-owner@bhopal.local' }],
     category: 'personal',
     conflict: false,
-    prepNotes: 'Dental insurance card and ID pre-verified. Routine cleaning, zero copay with Delta Dental.',
+    prepNotes: 'Check the goods against the delivery note.',
+  },
+  {
+    id: 'event-3',
+    title: 'Call with accountant',
+    startTime: '2026-11-26T10:00:00+05:30',
+    endTime: '2026-11-26T10:30:00+05:30',
+    timeFormatted: '10:00 AM - 10:30 AM',
+    location: 'Phone call',
+    attendees: [{ name: 'Accountant', email: 'accountant@shop.local' }],
+    category: 'meeting',
+    conflict: false,
+    prepNotes: "Review this month's bills.",
   },
 ];
 
 export const MOCK_BILLS: BillItem[] = [
   {
-    id: 'bill_coned',
-    merchant: 'ConEdison Electricity & Gas',
-    serviceCategory: 'Home Utilities',
-    amount: 135.20,
-    currency: 'USD',
-    dueDate: '2026-11-25',
+    id: 'bill-1',
+    merchant: 'Electricity bill',
+    serviceCategory: 'Shop Utilities',
+    amount: 1240,
+    currency: 'INR',
+    dueDate: '2026-11-28',
     status: 'scheduled',
     hasAnomaly: false,
     autoPayEnabled: false,
   },
   {
-    id: 'bill_verizon_fiber',
-    merchant: 'Verizon Fios 1-Gig Fiber',
-    serviceCategory: 'Home Internet',
-    amount: 79.99,
-    currency: 'USD',
-    dueDate: '2026-11-29',
+    id: 'bill-2',
+    merchant: 'Supplier bill',
+    serviceCategory: 'Shop Stock',
+    amount: 8500,
+    currency: 'INR',
+    dueDate: '2026-11-30',
     status: 'scheduled',
     hasAnomaly: false,
-    autoPayEnabled: true,
+    autoPayEnabled: false,
   },
   {
-    id: 'bill_cloud_storage',
-    merchant: 'Apple One Family Premier',
-    serviceCategory: 'Cloud & Entertainment',
-    amount: 37.95,
-    currency: 'USD',
-    dueDate: '2026-12-02',
+    id: 'bill-3',
+    merchant: 'Internet bill',
+    serviceCategory: 'Shop Internet',
+    amount: 799,
+    currency: 'INR',
+    dueDate: '2026-12-05',
     status: 'scheduled',
     hasAnomaly: false,
-    autoPayEnabled: true,
-  },
-  {
-    id: 'bill_gym_monthly',
-    merchant: 'Equinox Fitness Club',
-    serviceCategory: 'Health & Wellness',
-    amount: 280.00,
-    currency: 'USD',
-    dueDate: '2026-11-18',
-    status: 'paid',
-    hasAnomaly: false,
-    autoPayEnabled: true,
+    autoPayEnabled: false,
   },
 ];
 
 export const MOCK_REFUNDS: RefundItem[] = [
   {
-    id: 'ref_delta_flight',
-    merchant: 'Delta Air Lines',
-    trackingId: 'DL-EU261-88291',
-    claimAmount: 240.00,
-    currency: 'USD',
+    id: 'refund-1',
+    merchant: 'Online store',
+    trackingId: '8891',
+    claimAmount: 1999,
+    currency: 'INR',
     dateInitiated: '2026-11-17',
     expectedDate: '2026-11-26',
     status: 'under_review',
-    negotiationStep: 'Claim filed for 4-hour delay on flight DL 189. Stalled for 7 days; Homingo drafted status follow-up.',
-    supportThreadUrl: 'https://delta.com/claims/DL-88291',
-  },
-  {
-    id: 'ref_target_return',
-    merchant: 'Target Store Return',
-    trackingId: 'TGT-RET-4921',
-    claimAmount: 48.20,
-    currency: 'USD',
-    dateInitiated: '2026-11-22',
-    expectedDate: '2026-11-25',
-    status: 'merchant_approved',
-    negotiationStep: 'Return processed in store. Bank credit pending settlement.',
-  },
-  {
-    id: 'ref_double_charge',
-    merchant: 'Whole Foods Market',
-    trackingId: 'WFM-DISP-1102',
-    claimAmount: 19.50,
-    currency: 'USD',
-    dateInitiated: '2026-11-20',
-    status: 'refunded',
-    negotiationStep: 'Autonomous dispute approved for duplicate coffee bag charge.',
+    negotiationStep:
+      'Refund of Rs 1,999 for order 8891 has been pending for 7 days. Homingo drafted a follow-up message for the online store.',
   },
 ];
 
-export const MOCK_APPROVALS: ApprovalItem[] = [
-  {
-    id: 'appr_coned_pay',
-    title: 'Authorize $135.20 Payment to ConEdison',
-    category: 'financial',
-    urgency: 'high',
-    status: 'pending',
-    aiReasoning: 'Bill is due tomorrow (Nov 25). Auto-pay is disabled on this account to prevent unexpected charges. Requires your 1-click confirmation.',
-    details: {
-      vendor: 'ConEdison Utilities (Account #9910-21)',
-      amount: 135.20,
-      scheduledTime: 'Due Nov 25, 2026 (Tomorrow)',
-      impactSummary: 'Prevents late fees ($7.50) and maintains active utility service.',
-    },
-    createdAt: '2026-11-24T08:00:00Z',
-  },
-  {
-    id: 'appr_clinic_email',
-    title: 'Send Doctor Follow-up to Dr. Julian Aris',
-    category: 'email',
-    urgency: 'medium',
-    status: 'pending',
-    aiReasoning: 'Doctor requested confirmation of review format. Homingo drafted a concise reply proposing a 15-min telemedicine call Thursday 2-4 PM.',
-    details: {
-      recipient: 'Dr. Julian Aris (dr.aris@metrohealth.org)',
-      contractName: 'Annual Wellness Review',
-      impactSummary: 'Secures preferred telemedicine time slot before clinic fills up.',
-    },
-    createdAt: '2026-11-24T12:35:00Z',
-  },
-  {
-    id: 'appr_cleaner_paid',
-    title: 'Paid $120.00 for Home Deep Cleaning',
-    category: 'financial',
-    urgency: 'low',
-    status: 'approved',
-    aiReasoning: 'Standard pre-authorized bi-weekly home cleaning service.',
-    details: {
-      vendor: 'Sparkle Cleaners NYC',
-      amount: 120.00,
-      impactSummary: 'Service completed on Monday.',
-    },
-    createdAt: '2026-11-23T15:00:00Z',
-  },
-];
+// Approvals start empty on purpose. The backend creates a real approval
+// only when the user asks for a risky action in chat, for example
+// "bill pay kar do". Those approvals appear here through the API service.
+export const MOCK_APPROVALS: ApprovalItem[] = [];
 
 export const MOCK_ACTIVITY_LOGS: ActivityLogItem[] = [
   {
-    id: 'act_triage_inbox',
-    title: 'Analysed 18 Personal & Household Emails',
-    description: 'Flagged Dr. Aris lab results, archived 16 marketing messages, generated 1 draft reply.',
+    id: 'act_read_mail',
+    title: 'Read 5 Shop Mails, Flagged 4 Important Ones',
+    description:
+      'Supplier invoice, refund update for order 8891, electricity bill reminder, and licence renewal reminder flagged as important.',
     category: 'email',
     actor: 'Autonomous Agent',
-    toolUsed: 'gmail.personal_triage',
+    toolUsed: 'email_agent.read_mail',
     status: 'completed',
-    timestamp: '2026-11-24T13:45:00Z',
+    timestamp: '2026-11-24T13:45:00+05:30',
     durationFormatted: '1.2s',
   },
   {
-    id: 'act_bill_audit',
-    title: 'Audited ConEdison November Energy Statement',
-    description: 'Verified $135.20 usage against historical seasonal averages. Prepared payment authorization.',
+    id: 'act_check_bills',
+    title: 'Checked 3 Shop Bills Due This Month',
+    description:
+      'Electricity Rs 1,240 due 28 Nov, supplier Rs 8,500 due 30 Nov, internet Rs 799 due 5 Dec. No payment made without approval.',
     category: 'financial',
     actor: 'Autonomous Agent',
-    toolUsed: 'utilities.bill_analyzer',
+    toolUsed: 'finance_agent.check_bills',
     status: 'completed',
-    timestamp: '2026-11-24T11:20:00Z',
+    timestamp: '2026-11-24T11:20:00+05:30',
     durationFormatted: '0.8s',
   },
   {
-    id: 'act_buffer_protect',
-    title: 'Protected 25-Min Transit Buffer for Metro Dental',
-    description: 'Estimated transit time via Google Maps. Reserved 3:35 PM to 4:00 PM to eliminate delay risk.',
-    category: 'calendar',
-    actor: 'Autonomous Agent',
-    toolUsed: 'calendar.smart_travel_guard',
-    status: 'completed',
-    timestamp: '2026-11-24T09:15:00Z',
-    durationFormatted: '0.6s',
-  },
-  {
-    id: 'act_refund_escalate',
-    title: 'Detected 7-Day Stall on Delta Refund Claim',
-    description: 'Identified lack of airline response on claim #DL-88291. Formulated polite follow-up brief.',
+    id: 'act_track_refund',
+    title: 'Checked Refund for Order 8891',
+    description:
+      'Refund of Rs 1,999 has been pending for 7 days. Follow-up message drafted for the online store.',
     category: 'financial',
     actor: 'Autonomous Agent',
-    toolUsed: 'refund_negotiator.status_check',
+    toolUsed: 'finance_agent.track_refund',
     status: 'completed',
-    timestamp: '2026-11-23T18:00:00Z',
+    timestamp: '2026-11-23T18:00:00+05:30',
     durationFormatted: '1.4s',
   },
   {
-    id: 'act_sync_failed_test',
-    title: 'Attempted Sync with Apartment Key Fob Portal',
-    description: 'Resident portal session expired; prompted notification to reconnect credentials.',
-    category: 'system',
+    id: 'act_licence_check',
+    title: 'Checked Shop Licence Renewal Documents',
+    description:
+      'Aadhaar is already on file. Address proof is still missing. Renewal cannot be filed until it is submitted.',
+    category: 'assistant',
     actor: 'Autonomous Agent',
-    toolUsed: 'smart_home.keyfob_bridge',
-    status: 'failed',
-    timestamp: '2026-11-23T12:10:00Z',
-    durationFormatted: '2.1s',
+    toolUsed: 'task_agent.licence_checklist',
+    status: 'completed',
+    timestamp: '2026-11-23T12:10:00+05:30',
+    durationFormatted: '0.6s',
   },
 ];
 
 export const MOCK_CONNECTED_ACCOUNTS: ConnectedAccount[] = [
   {
     id: 'acc_google',
-    name: 'Google Workspace (Personal Mail, Calendar, Drive)',
+    name: 'Google (Shop Mail and Calendar)',
     provider: 'google',
     icon: 'Mail',
     connected: true,
-    lastSyncedAt: '2026-11-24T16:00:00Z',
-    scopes: ['gmail.readonly', 'gmail.compose', 'calendar.events'],
+    lastSyncedAt: '2026-11-24T16:00:00+05:30',
+    scopes: ['gmail.readonly', 'calendar.events'],
   },
   {
-    id: 'acc_slack',
-    name: 'Household & Family Slack Channel',
-    provider: 'slack',
-    icon: 'MessageSquare',
-    connected: true,
-    lastSyncedAt: '2026-11-24T15:45:00Z',
-    scopes: ['chat:write', 'channels:read'],
-  },
-  {
-    id: 'acc_stripe',
-    name: 'Chase Banking & Utility Billing Feed',
+    id: 'acc_payments',
+    name: 'Shop Payments (Sample Data Only)',
     provider: 'stripe',
     icon: 'CreditCard',
-    connected: true,
-    lastSyncedAt: '2026-11-24T14:30:00Z',
-    scopes: ['transactions.read', 'invoices.read'],
-  },
-  {
-    id: 'acc_notion',
-    name: 'Personal Life Wiki & Home Documents',
-    provider: 'notion',
-    icon: 'BookOpen',
-    connected: true,
-    lastSyncedAt: '2026-11-24T12:00:00Z',
-    scopes: ['pages.read', 'databases.read'],
+    connected: false,
+    scopes: ['transactions.read'],
   },
 ];
 
 export const MOCK_PERMISSIONS: AutonomousPermissions = {
-  autoApproveExpensesUnder: 100,
+  autoApproveExpensesUnder: 0,
   requireApprovalForExternalEmails: true,
-  allowAutoRescheduleMeetings: true,
-  allowRefundDisputeAutonomousClaims: true,
+  allowAutoRescheduleMeetings: false,
+  allowRefundDisputeAutonomousClaims: false,
   dailyExecutiveBriefingTime: '08:00 AM',
   dataSharingForAiFineTuning: false,
 };

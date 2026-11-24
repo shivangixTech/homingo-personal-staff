@@ -1,4 +1,4 @@
-// HOMINGO AI — Type Definitions
+// HOMINGO AI - Type Definitions
 // Aligned with docs/API_CONTRACT.md
 
 export type UrgencyLevel = 'low' | 'medium' | 'high' | 'critical';

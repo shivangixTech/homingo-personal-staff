@@ -351,8 +351,8 @@ export const SettingsPage: React.FC = () => {
               <input
                 type="range"
                 min="0"
-                max="500"
-                step="25"
+                max="10000"
+                step="500"
                 value={permissions.autoApproveExpensesUnder}
                 onChange={(e) =>
                   handleUpdatePermission('autoApproveExpensesUnder', Number(e.target.value))
@@ -360,9 +360,9 @@ export const SettingsPage: React.FC = () => {
                 className="w-full accent-indigo-600 cursor-pointer"
               />
               <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-                <span>$0 (Always require 1-click approval)</span>
-                <span>$250</span>
-                <span>$500</span>
+                <span>Rs 0 (Always require 1-click approval)</span>
+                <span>Rs 5,000</span>
+                <span>Rs 10,000</span>
               </div>
             </div>
 
@@ -371,7 +371,7 @@ export const SettingsPage: React.FC = () => {
               <div className="flex items-center justify-between p-3.5 rounded-2xl border bg-slate-50 border-slate-200 dark:bg-slate-950 dark:border-slate-800">
                 <div>
                   <span className="text-xs font-bold text-slate-900 dark:text-white block">
-                    Require Confirmation for Doctor & Personal Emails
+                    Require Confirmation for Shop & Customer Emails
                   </span>
                   <span className="text-[11px] text-slate-500 dark:text-slate-400">
                     Drafts are prepared automatically, but never dispatched without your sign-off.

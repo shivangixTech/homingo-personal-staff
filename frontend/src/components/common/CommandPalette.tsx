@@ -172,7 +172,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
             autoFocus
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Type a command or ask Homingo anything (e.g. 'Pay ConEd', 'Delta refund')..."
+            placeholder="Type a command or ask Homingo anything (e.g. 'bijli ka bill kitna hai', 'aaj ki meeting batao')..."
             className="w-full py-4 text-sm bg-transparent text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none"
           />
           <button

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Receipt,
   AlertTriangle,
@@ -20,6 +21,7 @@ import { useToast } from '../context/ToastContext';
 
 export const BillsRefundsPage: React.FC = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [bills, setBills] = useState<BillItem[]>([]);
   const [refunds, setRefunds] = useState<RefundItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,7 +64,7 @@ export const BillsRefundsPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
-            Household Bills & Autonomous Refunds
+            Shop Bills & Refunds
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Homingo audits monthly statements for surprise fees, reminds you of utility deadlines, and tracks merchant refunds.
@@ -71,7 +73,7 @@ export const BillsRefundsPage: React.FC = () => {
 
         <div className="flex items-center gap-2">
           <Badge variant="indigo" size="md" dot>
-            Audited via Bank & Utility Feeds
+            Audited via Shop Bills
           </Badge>
         </div>
       </div>
@@ -79,17 +81,17 @@ export const BillsRefundsPage: React.FC = () => {
       {/* Top Financial Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <MetricCard
-          label="Upcoming Household Bills"
+          label="Upcoming Shop Bills"
           value={formatCurrency(totalUpcomingBills)}
           subValue="Due in next 10 days"
-          trend={{ direction: 'neutral', text: 'ConEdison due tomorrow' }}
+          trend={{ direction: 'neutral', text: 'Electricity bill due 28 Nov' }}
           icon={<CreditCard className="w-4 h-4 text-indigo-500" />}
         />
         <MetricCard
           label="Tracked Refunds & Claims"
           value={formatCurrency(totalRefundsTracked)}
-          subValue="3 active claims"
-          trend={{ direction: 'up', text: '$19.50 settled' }}
+          subValue="1 active claim"
+          trend={{ direction: 'up', text: 'Rs 1,999 pending 7 days' }}
           icon={<RefreshCw className="w-4 h-4 text-emerald-500" />}
         />
         <MetricCard
@@ -164,14 +166,12 @@ export const BillsRefundsPage: React.FC = () => {
                         variant="primary"
                         size="sm"
                         onClick={() =>
-                          toast({
-                            title: 'Payment Queued',
-                            description: `Authorized $135.20 to ${bill.merchant}.`,
-                            type: 'success',
+                          navigate('/assistant', {
+                            state: { initialPrompt: 'bill pay kar do' },
                           })
                         }
                       >
-                        1-Click Pay
+                        Ask Homingo to Pay
                       </Button>
                     ) : (
                       <span className="text-[11px] text-slate-400 font-mono">
